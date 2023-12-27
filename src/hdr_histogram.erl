@@ -109,7 +109,9 @@
 -type ref() :: binary().  %% NIF private data (looks like empty binary)
 
 init() ->
-    erlang:load_nif(erlang:atom_to_list(?MODULE), 0).
+    {ok, Cwd} = file:get_cwd(),
+    Filename = filename:join(Cwd, erlang:atom_to_list(?MODULE)),
+    erlang:load_nif(Filename, 0).
 
 -spec open(HighestTrackableValue,SignificantFigures)
     -> {ok,Ref} | {error,Reason} when
